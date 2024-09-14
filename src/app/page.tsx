@@ -1,11 +1,19 @@
 'use client'
 
 import { useSession } from "next-auth/react"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const [text, setText] = useState('')
+  const router = useRouter()
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin')
+    }
+  }, [status, router])
 
   const handleSaveText = async () => {
     const response = await fetch('/api/save-text', {
@@ -23,17 +31,19 @@ export default function Home() {
     }
   }
 
+  if (status === "loading") {
+    return <div>Loading...</div>
+  }
+
   if (!session) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <p className="text-xl">Please sign in to access this page.</p>
-      </div>
-    )
+    return null // This will prevent any flash of content before redirect
   }
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
-      <h1 className="text-2xl font-bold mb-4">Welcome, {session.user.name}</h1>
+      <h1 className="text-2xl font-bold mb-4">
+        Welcome, {session.user?.name ?? 'User'}
+      </h1>
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
