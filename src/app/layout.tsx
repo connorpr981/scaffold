@@ -2,7 +2,9 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import { Providers } from './providers'
 import Header from '../components/Header'
-import ErrorBoundary from '../components/ErrorBoundary'
+import dynamic from 'next/dynamic'
+
+const DynamicErrorBoundary = dynamic(() => import('../components/ErrorBoundary'), { ssr: false })
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,9 +23,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <Header />
-          <ErrorBoundary>
+          <DynamicErrorBoundary>
             <main>{children}</main>
-          </ErrorBoundary>
+          </DynamicErrorBoundary>
         </Providers>
       </body>
     </html>

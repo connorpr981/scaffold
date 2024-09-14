@@ -77,7 +77,7 @@ export default function Projects() {
         <ul className="space-y-2 mb-4">
           {projects.map((project) => (
             <li key={project}>
-              <Link href={`/project/${encodeURIComponent(project)}`} className="text-blue-500 hover:underline">
+              <Link href={`/projects/${encodeURIComponent(project)}`} className="text-blue-500 hover:underline">
                 {project}
               </Link>
             </li>
