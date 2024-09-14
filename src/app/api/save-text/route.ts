@@ -11,6 +11,7 @@ export async function POST(request: Request) {
   const { text, project } = await request.json()
 
   try {
+    // Update the CREATE TABLE statement to include the project column
     await sql`
       CREATE TABLE IF NOT EXISTS user_texts (
         id SERIAL PRIMARY KEY,
@@ -19,6 +20,19 @@ export async function POST(request: Request) {
         project TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
+    `
+
+    // Add a migration to add the project column if it doesn't exist
+    await sql`
+      DO $$ 
+      BEGIN 
+        IF NOT EXISTS (
+          SELECT FROM information_schema.columns 
+          WHERE table_name = 'user_texts' AND column_name = 'project'
+        ) THEN
+          ALTER TABLE user_texts ADD COLUMN project TEXT;
+        END IF;
+      END $$;
     `
 
     await sql`
