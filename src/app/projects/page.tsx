@@ -52,15 +52,17 @@ export default function Projects() {
         setNewProject('')
         fetchProjects()
       } else {
-        throw new Error('Failed to create project')
+        const errorData = await response.json()
+        throw new Error(errorData.error || response.statusText || 'Unknown error occurred')
       }
     } catch (error) {
       console.error('Error creating project:', error)
-      alert('Failed to create project. Please try again.')
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred'
+      alert(`Failed to create project. ${errorMessage}`)
     }
   }
 
-  if (status === "loading") {
+  if (status === "loading" || isLoading) {
     return <div>Loading...</div>
   }
 
@@ -71,9 +73,7 @@ export default function Projects() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
       <h1 className="text-2xl font-bold mb-4">Your Projects</h1>
-      {isLoading ? (
-        <p>Loading projects...</p>
-      ) : projects.length > 0 ? (
+      {projects.length > 0 ? (
         <ul className="space-y-2 mb-4">
           {projects.map((project) => (
             <li key={project}>
@@ -84,7 +84,7 @@ export default function Projects() {
           ))}
         </ul>
       ) : (
-        <p className="mb-4">You don&apos;t have any projects yet. Create one below!</p>
+        <p className="mb-4">You don't have any projects yet. Create one below!</p>
       )}
       <div className="flex space-x-2">
         <input

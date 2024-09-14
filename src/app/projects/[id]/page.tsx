@@ -42,7 +42,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   }, [status, router, fetchSavedTexts])
 
   const handleSaveText = async () => {
-    if (isSaving) return
+    if (isSaving || !text.trim()) return
     setIsSaving(true)
     try {
       const response = await fetch('/api/save-text', {
@@ -91,8 +91,8 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
       />
       <button
         onClick={handleSaveText}
-        disabled={isSaving}
-        className={`bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4 ${isSaving ? 'opacity-50 cursor-not-allowed' : ''}`}
+        disabled={isSaving || !text.trim()}
+        className={`bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4 ${(isSaving || !text.trim()) ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
         {isSaving ? 'Saving...' : 'Save Text'}
       </button>
