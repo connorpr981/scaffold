@@ -2,7 +2,7 @@
 const nextConfig = {
     reactStrictMode: true,
     experimental: {
-      serverComponentsExternalPackages: ['@prisma/client'],
+      appDir: true,
     },
     async headers() {
       return [
