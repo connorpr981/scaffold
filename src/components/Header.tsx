@@ -19,6 +19,9 @@ export default function Header() {
           ) : status === 'authenticated' ? (
             <div className="flex items-center space-x-4">
               <span>Welcome, {userData?.name || 'User'}</span>
+              <Link href="/projects" className="hover:underline">
+                Projects
+              </Link>
               <button
                 onClick={() => signOut({ callbackUrl: '/' })}
                 className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded"

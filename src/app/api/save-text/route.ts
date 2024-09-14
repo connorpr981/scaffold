@@ -35,6 +35,11 @@ export async function POST(request: Request) {
       END $$;
     `
 
+    if (text.trim() === '') {
+      // If text is empty, just create the project without inserting a text
+      return NextResponse.json({ message: 'Project created successfully' }, { status: 200 })
+    }
+
     await sql`
       INSERT INTO user_texts (user_email, content, project)
       VALUES (${session.user.email}, ${text}, ${project})
