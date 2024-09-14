@@ -4,7 +4,7 @@ import { useUser } from '../contexts/UserContext'
 import Link from 'next/link'
 
 export default function Home() {
-  const { userData, status } = useUser()
+  const { status } = useUser()
 
   if (status === "loading") {
     return <div>Loading...</div>
