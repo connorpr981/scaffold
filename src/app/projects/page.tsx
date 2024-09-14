@@ -84,7 +84,7 @@ export default function Projects() {
           ))}
         </ul>
       ) : (
-        <p className="mb-4">You don't have any projects yet. Create one below!</p>
+        <p className="mb-4">You don&apos;t have any projects yet. Create one below!</p>
       )}
       <div className="flex space-x-2">
         <input
