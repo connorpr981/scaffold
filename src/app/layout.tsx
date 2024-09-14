@@ -9,7 +9,7 @@ const DynamicErrorBoundary = dynamic(() => import('../components/ErrorBoundary')
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Template App',
+  title: 'Template',
   description: 'A template app with NextAuth and Vercel Postgres',
 }
 

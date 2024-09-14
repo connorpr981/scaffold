@@ -13,7 +13,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
-      <h1 className="text-3xl font-bold mb-8 text-foreground">Welcome to My App</h1>
+      <h1 className="text-3xl font-bold mb-8 text-foreground">Welcome to Template</h1>
       {status === "authenticated" ? (
         <Button asChild>
           <Link href="/projects">View Your Projects</Link>
