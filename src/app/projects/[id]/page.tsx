@@ -5,6 +5,9 @@ import { useRouter } from 'next/navigation'
 import { useUser } from '../../../contexts/UserContext'
 import SavedTexts from '../../../components/SavedTexts'
 import Link from 'next/link'
+import { Button } from "@/components/ui/button"
+import { Textarea } from "@/components/ui/textarea"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 export default function ProjectPage({ params }: { params: { id: string } }) {
   const { userData, status } = useUser()
@@ -68,7 +71,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   }
 
   if (status === "loading" || isLoading) {
-    return <div>Loading...</div>
+    return <div className="flex justify-center items-center min-h-screen">Loading...</div>
   }
 
   if (!userData) {
@@ -76,28 +79,32 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
-      <h1 className="text-2xl font-bold mb-4">
-        Project: {project}
-      </h1>
-      <Link href="/projects" className="text-blue-500 hover:underline mb-4">
-        Back to Projects
-      </Link>
-      <textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        className="w-full max-w-lg p-2 mb-4 border rounded"
-        placeholder="Enter your text here"
-        rows={4}
-      />
-      <button
-        onClick={handleSaveText}
-        disabled={isSaving || !text.trim()}
-        className={`bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4 ${(isSaving || !text.trim()) ? 'opacity-50 cursor-not-allowed' : ''}`}
-      >
-        {isSaving ? 'Saving...' : 'Save Text'}
-      </button>
-      <SavedTexts texts={savedTexts} />
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
+      <Card className="w-full max-w-2xl">
+        <CardHeader>
+          <CardTitle>Project: {project}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Button asChild variant="link" className="mb-4">
+            <Link href="/projects">Back to Projects</Link>
+          </Button>
+          <Textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            className="mb-4"
+            placeholder="Enter your text here"
+            rows={4}
+          />
+          <Button
+            onClick={handleSaveText}
+            disabled={isSaving || !text.trim()}
+            className="mb-4"
+          >
+            {isSaving ? 'Saving...' : 'Save Text'}
+          </Button>
+          <SavedTexts texts={savedTexts} />
+        </CardContent>
+      </Card>
     </div>
   )
 }

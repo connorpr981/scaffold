@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useUser } from '../../contexts/UserContext'
 import Link from 'next/link'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 export default function Projects() {
   const { userData, status } = useUser()
@@ -63,7 +66,7 @@ export default function Projects() {
   }
 
   if (status === "loading" || isLoading) {
-    return <div>Loading...</div>
+    return <div className="flex justify-center items-center min-h-screen">Loading...</div>
   }
 
   if (!userData) {
@@ -71,36 +74,36 @@ export default function Projects() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
-      <h1 className="text-2xl font-bold mb-4">Your Projects</h1>
-      {projects.length > 0 ? (
-        <ul className="space-y-2 mb-4">
-          {projects.map((project) => (
-            <li key={project.id}>
-              <Link href={`/projects/${project.id}`} className="text-blue-500 hover:underline">
-                {project.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="mb-4">You don&apos;t have any projects yet. Create one below!</p>
-      )}
-      <div className="flex space-x-2">
-        <input
-          type="text"
-          value={newProject}
-          onChange={(e) => setNewProject(e.target.value)}
-          placeholder="New project name"
-          className="p-2 border rounded"
-        />
-        <button
-          onClick={handleCreateProject}
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-        >
-          Create Project
-        </button>
-      </div>
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle>Your Projects</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {projects.length > 0 ? (
+            <ul className="space-y-2 mb-4">
+              {projects.map((project) => (
+                <li key={project.id}>
+                  <Link href={`/projects/${project.id}`} className="text-primary hover:underline">
+                    {project.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mb-4 text-muted-foreground">You don&apos;t have any projects yet. Create one below!</p>
+          )}
+          <div className="flex space-x-2">
+            <Input
+              type="text"
+              value={newProject}
+              onChange={(e) => setNewProject(e.target.value)}
+              placeholder="New project name"
+            />
+            <Button onClick={handleCreateProject}>Create Project</Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
