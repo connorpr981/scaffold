@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link';
 import { useUser } from '../contexts/UserContext';
 import { signOut } from 'next-auth/react';
