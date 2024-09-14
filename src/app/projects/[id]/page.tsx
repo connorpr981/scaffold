@@ -56,11 +56,12 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
         setText('')
         fetchSavedTexts()
       } else {
-        throw new Error('Failed to save text')
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to save text')
       }
     } catch (error) {
       console.error('Error saving text:', error)
-      alert('Failed to save text. Please try again.')
+      alert(error instanceof Error ? error.message : 'An unknown error occurred')
     } finally {
       setIsSaving(false)
     }

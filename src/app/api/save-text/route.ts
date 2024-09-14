@@ -34,18 +34,24 @@ export async function POST(request: Request) {
     `
 
     if (rows.length > 0) {
-      return NextResponse.json({ error: 'Project already exists' }, { status: 400 })
+      // If the project exists, update the existing row instead of creating a new one
+      await sql`
+        UPDATE user_texts
+        SET content = ${text}
+        WHERE user_email = ${session.user.email} AND project = ${project}
+      `
+      return NextResponse.json({ message: 'Text updated successfully' }, { status: 200 })
     }
 
-    // Insert a new row even if text is empty, to create the project
+    // Insert a new row
     await sql`
       INSERT INTO user_texts (user_email, content, project)
-      VALUES (${session.user.email}, ${text || ''}, ${project})
+      VALUES (${session.user.email}, ${text}, ${project})
     `
 
-    return NextResponse.json({ message: 'Project created successfully' }, { status: 200 })
+    return NextResponse.json({ message: 'Text saved successfully' }, { status: 200 })
   } catch (error) {
-    console.error('Failed to save text or create project:', error)
-    return NextResponse.json({ error: 'Failed to save text or create project' }, { status: 500 })
+    console.error('Failed to save text:', error)
+    return NextResponse.json({ error: 'Failed to save text' }, { status: 500 })
   }
 }
