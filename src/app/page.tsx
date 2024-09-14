@@ -3,17 +3,29 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useUser } from '../contexts/UserContext'
+import SavedTexts from '../components/SavedTexts'
 
 export default function Home() {
   const { userData, status } = useUser()
   const [text, setText] = useState('')
+  const [savedTexts, setSavedTexts] = useState([])
   const router = useRouter()
 
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/auth/signin')
+    } else if (status === 'authenticated') {
+      fetchSavedTexts()
     }
   }, [status, router])
+
+  const fetchSavedTexts = async () => {
+    const response = await fetch('/api/get-texts')
+    if (response.ok) {
+      const data = await response.json()
+      setSavedTexts(data.texts)
+    }
+  }
 
   const handleSaveText = async () => {
     const response = await fetch('/api/save-text', {
@@ -26,6 +38,7 @@ export default function Home() {
     if (response.ok) {
       alert('Text saved successfully!')
       setText('')
+      fetchSavedTexts()
     } else {
       alert('Failed to save text')
     }
@@ -53,10 +66,11 @@ export default function Home() {
       />
       <button
         onClick={handleSaveText}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4"
       >
         Save Text
       </button>
+      <SavedTexts texts={savedTexts} />
     </div>
   )
 }
