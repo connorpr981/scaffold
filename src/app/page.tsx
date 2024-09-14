@@ -1,11 +1,11 @@
 'use client'
 
-import { useSession } from "next-auth/react"
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useUser } from '../contexts/UserContext'
 
 export default function Home() {
-  const { data: session, status } = useSession()
+  const { userData, status } = useUser()
   const [text, setText] = useState('')
   const router = useRouter()
 
@@ -35,14 +35,14 @@ export default function Home() {
     return <div>Loading...</div>
   }
 
-  if (!session) {
-    return null // This will prevent any flash of content before redirect
+  if (!userData) {
+    return null
   }
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
       <h1 className="text-2xl font-bold mb-4">
-        Welcome, {session.user?.name ?? 'User'}
+        Welcome, {userData.name ?? 'User'}
       </h1>
       <textarea
         value={text}
