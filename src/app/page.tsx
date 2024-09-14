@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useUser } from '../contexts/UserContext'
 import SavedTexts from '../components/SavedTexts'
@@ -8,24 +8,41 @@ import SavedTexts from '../components/SavedTexts'
 export default function Home() {
   const { userData, status } = useUser()
   const [text, setText] = useState('')
+  const [project, setProject] = useState('')
   const [savedTexts, setSavedTexts] = useState([])
+  const [projects, setProjects] = useState<string[]>([])
   const router = useRouter()
+
+  const fetchProjects = useCallback(async () => {
+    const response = await fetch('/api/get-projects')
+    if (response.ok) {
+      const data = await response.json()
+      setProjects(data.projects)
+    }
+  }, [])
+
+  const fetchSavedTexts = useCallback(async () => {
+    const response = await fetch(`/api/get-texts${project ? `?project=${project}` : ''}`)
+    if (response.ok) {
+      const data = await response.json()
+      setSavedTexts(data.texts)
+    }
+  }, [project])
 
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/auth/signin')
     } else if (status === 'authenticated') {
+      fetchProjects()
       fetchSavedTexts()
     }
-  }, [status, router])
+  }, [status, router, fetchProjects, fetchSavedTexts])
 
-  const fetchSavedTexts = async () => {
-    const response = await fetch('/api/get-texts')
-    if (response.ok) {
-      const data = await response.json()
-      setSavedTexts(data.texts)
+  useEffect(() => {
+    if (status === 'authenticated') {
+      fetchSavedTexts()
     }
-  }
+  }, [status, fetchSavedTexts])
 
   const handleSaveText = async () => {
     const response = await fetch('/api/save-text', {
@@ -33,14 +50,29 @@ export default function Home() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ text, project }),
     })
     if (response.ok) {
       alert('Text saved successfully!')
       setText('')
       fetchSavedTexts()
+      fetchProjects()
     } else {
       alert('Failed to save text')
+    }
+  }
+
+  const handleProjectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value
+    setProject(value)
+    if (value === 'new') {
+      const newProject = prompt('Enter new project name:')
+      if (newProject) {
+        setProject(newProject)
+        setProjects([...projects, newProject])
+      } else {
+        setProject('')
+      }
     }
   }
 
@@ -57,6 +89,17 @@ export default function Home() {
       <h1 className="text-2xl font-bold mb-4">
         Welcome, {userData.name ?? 'User'}
       </h1>
+      <select
+        value={project}
+        onChange={handleProjectChange}
+        className="w-full max-w-lg p-2 mb-4 border rounded"
+      >
+        <option value="">All Projects</option>
+        {projects.map((p) => (
+          <option key={p} value={p}>{p}</option>
+        ))}
+        <option value="new">+ New Project</option>
+      </select>
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}

@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
   }
 
-  const { text } = await request.json()
+  const { text, project } = await request.json()
 
   try {
     await sql`
@@ -16,13 +16,14 @@ export async function POST(request: Request) {
         id SERIAL PRIMARY KEY,
         user_email TEXT,
         content TEXT,
+        project TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `
 
     await sql`
-      INSERT INTO user_texts (user_email, content)
-      VALUES (${session.user.email}, ${text})
+      INSERT INTO user_texts (user_email, content, project)
+      VALUES (${session.user.email}, ${text}, ${project})
     `
 
     return NextResponse.json({ message: 'Text saved successfully' }, { status: 200 })
