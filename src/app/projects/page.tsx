@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 export default function Projects() {
   const { userData, status } = useUser()
-  const [projects, setProjects] = useState<string[]>([])
+  const [projects, setProjects] = useState<Array<{ id: number, name: string }>>([])
   const [newProject, setNewProject] = useState('')
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
@@ -76,9 +76,9 @@ export default function Projects() {
       {projects.length > 0 ? (
         <ul className="space-y-2 mb-4">
           {projects.map((project) => (
-            <li key={project}>
-              <Link href={`/projects/${encodeURIComponent(project)}`} className="text-blue-500 hover:underline">
-                {project}
+            <li key={project.id}>
+              <Link href={`/projects/${project.id}`} className="text-blue-500 hover:underline">
+                {project.name}
               </Link>
             </li>
           ))}

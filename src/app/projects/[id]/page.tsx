@@ -18,7 +18,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   const fetchSavedTexts = useCallback(async () => {
     setIsLoading(true)
     try {
-      const response = await fetch(`/api/get-texts?project=${encodeURIComponent(project)}`)
+      const response = await fetch(`/api/get-texts?projectId=${params.id}`)
       if (response.ok) {
         const data = await response.json()
         setSavedTexts(data.texts)
@@ -31,7 +31,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
     } finally {
       setIsLoading(false)
     }
-  }, [project])
+  }, [params.id])
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -50,7 +50,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text, project }),
+        body: JSON.stringify({ text, project: params.id }),
       })
       if (response.ok) {
         setText('')

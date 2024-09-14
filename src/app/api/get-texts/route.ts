@@ -9,24 +9,20 @@ export async function GET(request: Request) {
   }
 
   const { searchParams } = new URL(request.url)
-  const project = searchParams.get('project')
+  const projectId = searchParams.get('projectId')
+
+  if (!projectId) {
+    return NextResponse.json({ error: 'Project ID is required' }, { status: 400 })
+  }
 
   try {
-    let query = `
-      SELECT content, project, created_at
-      FROM user_texts
-      WHERE user_email = $1
+    const { rows } = await sql`
+      SELECT t.id, t.content, t.created_at
+      FROM texts t
+      JOIN projects p ON t.project_id = p.id
+      WHERE p.user_email = ${session.user.email} AND p.id = ${projectId}
+      ORDER BY t.created_at DESC
     `
-    const params = [session.user.email]
-
-    if (project) {
-      query += ` AND project = $2`
-      params.push(project)
-    }
-
-    query += ` ORDER BY created_at DESC`
-
-    const { rows } = await sql.query(query, params)
 
     return NextResponse.json({ texts: rows }, { status: 200 })
   } catch (error) {

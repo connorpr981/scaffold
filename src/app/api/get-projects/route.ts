@@ -10,15 +10,13 @@ export async function GET() {
 
   try {
     const { rows } = await sql`
-      SELECT DISTINCT project
-      FROM user_texts
+      SELECT id, name
+      FROM projects
       WHERE user_email = ${session.user.email}
-      ORDER BY project
+      ORDER BY name
     `
 
-    const projects = rows.map(row => row.project).filter(Boolean)
-
-    return NextResponse.json({ projects }, { status: 200 })
+    return NextResponse.json({ projects: rows }, { status: 200 })
   } catch (error) {
     console.error('Failed to fetch projects:', error)
     return NextResponse.json({ error: 'Failed to fetch projects' }, { status: 500 })

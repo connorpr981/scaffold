@@ -15,38 +15,18 @@ export async function POST(request: Request) {
   }
 
   try {
-    // Ensure the table exists
-    await sql`
-      CREATE TABLE IF NOT EXISTS user_texts (
-        id SERIAL PRIMARY KEY,
-        user_email TEXT,
-        content TEXT,
-        project TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
+    // Check if the project exists or create it
+    const { rows: [projectRow] } = await sql`
+      INSERT INTO projects (user_email, name)
+      VALUES (${session.user.email}, ${project})
+      ON CONFLICT (user_email, name) DO UPDATE SET updated_at = CURRENT_TIMESTAMP
+      RETURNING id
     `
 
-    // Check if the project already exists
-    const { rows } = await sql`
-      SELECT 1 FROM user_texts
-      WHERE user_email = ${session.user.email} AND project = ${project}
-      LIMIT 1
-    `
-
-    if (rows.length > 0) {
-      // If the project exists, update the existing row instead of creating a new one
-      await sql`
-        UPDATE user_texts
-        SET content = ${text}
-        WHERE user_email = ${session.user.email} AND project = ${project}
-      `
-      return NextResponse.json({ message: 'Text updated successfully' }, { status: 200 })
-    }
-
-    // Insert a new row
+    // Insert the text
     await sql`
-      INSERT INTO user_texts (user_email, content, project)
-      VALUES (${session.user.email}, ${text}, ${project})
+      INSERT INTO texts (project_id, content)
+      VALUES (${projectRow.id}, ${text})
     `
 
     return NextResponse.json({ message: 'Text saved successfully' }, { status: 200 })
