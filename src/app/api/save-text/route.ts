@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server'
 import { sql } from '@vercel/postgres'
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "../auth/[...nextauth]/route"
 
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession()
   if (!session || !session.user?.email) {
     return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
   }
