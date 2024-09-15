@@ -12,7 +12,7 @@ export default function Header() {
     <header className="bg-primary text-primary-foreground p-4">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold">
-          Template
+          Scaffold // Updated project name
         </Link>
         <nav>
           {status === 'loading' ? (

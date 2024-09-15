@@ -38,25 +38,20 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
-  isLoading?: boolean; // Add isLoading prop here
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, isLoading = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button";
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
-        disabled={isLoading} // Disable button when loading
-        tabIndex={isLoading ? -1 : 0} // Prevent keyboard navigation when loading
         {...props}
-      >
-        {isLoading ? 'Loading...' : props.children} {/* Show loading text */}
-      </Comp>
-    );
+      />
+    )
   }
-);
+)
 Button.displayName = "Button"
 
 export { Button, buttonVariants }

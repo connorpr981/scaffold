@@ -16,7 +16,7 @@ export default function Home() {
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-3xl text-center">Welcome to Template</CardTitle>
+          <CardTitle className="text-3xl text-center">Welcome to Scaffold</CardTitle> // Updated project name
         </CardHeader>
         <CardContent className="text-center">
           <p className="mb-6 text-muted-foreground">
