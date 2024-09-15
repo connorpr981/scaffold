@@ -8,7 +8,8 @@ import Link from 'next/link'
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { handleError } from '../../../utils/errorHandler'; // Import the error handler
+import { handleError } from '../../../utils/errorHandler'
+import { PageContainer } from '@/components/PageContainer'
 
 export default function ProjectPage({ params }: { params: { id: string } }) {
   const { userData, status } = useUser()
@@ -82,38 +83,40 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Project: {projectName}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Button asChild variant="link" className="mb-4">
-            <Link href="/projects">Back to Projects</Link>
-          </Button>
-          <div className="space-y-4">
-            <Textarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Enter your input here"
-              rows={2}
-            />
-            <Textarea
-              value={output}
-              onChange={(e) => setOutput(e.target.value)}
-              placeholder="Enter your output here"
-              rows={2}
-            />
-            <Button
-              onClick={handleSaveText}
-              disabled={isSaving || !input.trim() || !output.trim()}
-            >
-              {isSaving ? 'Saving...' : 'Save Pair'}
+    <PageContainer>
+      <div className="space-y-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Project: {projectName}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Button asChild variant="link" className="mb-4">
+              <Link href="/projects">Back to Projects</Link>
             </Button>
-          </div>
-        </CardContent>
-      </Card>
-      <SavedTexts pairs={savedPairs} fetchProjectDetails={fetchProjectDetails} />
-    </div>
+            <div className="space-y-4">
+              <Textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Enter your input here"
+                rows={2}
+              />
+              <Textarea
+                value={output}
+                onChange={(e) => setOutput(e.target.value)}
+                placeholder="Enter your output here"
+                rows={2}
+              />
+              <Button
+                onClick={handleSaveText}
+                disabled={isSaving || !input.trim() || !output.trim()}
+              >
+                {isSaving ? 'Saving...' : 'Save Pair'}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+        <SavedTexts pairs={savedPairs} fetchProjectDetails={fetchProjectDetails} />
+      </div>
+    </PageContainer>
   )
 }
