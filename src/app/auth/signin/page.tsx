@@ -17,7 +17,7 @@ export default function SignIn() {
         </CardHeader>
         <CardContent className="text-center">
           <p className="mb-6 text-muted-foreground">
-            Please use one of the following methods to sign in.
+            Please use one of the following methods:
           </p>
           <Button
             onClick={() => signIn("github", { callbackUrl: "/" })}
