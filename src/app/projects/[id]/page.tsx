@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { handleError } from '../../../utils/errorHandler'; // Import the error handler
 
 export default function ProjectPage({ params }: { params: { id: string } }) {
   const { userData, status } = useUser()
@@ -64,8 +65,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
         throw new Error(errorData.error || 'Failed to save text')
       }
     } catch (error) {
-      console.error('Error saving text:', error)
-      alert(error instanceof Error ? error.message : 'An unknown error occurred')
+      handleError(error); // Use the centralized error handler
     } finally {
       setIsSaving(false)
     }
@@ -103,7 +103,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
           >
             {isSaving ? 'Saving...' : 'Save Text'}
           </Button>
-          <SavedTexts texts={savedTexts} />
+          <SavedTexts texts={savedTexts} fetchProjectDetails={fetchProjectDetails} />
         </CardContent>
       </Card>
     </div>

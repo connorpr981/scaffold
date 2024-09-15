@@ -65,6 +65,29 @@ export default function Projects() {
     }
   }
 
+  const handleDeleteProject = async (projectId: number) => {
+    if (confirm("Are you sure you want to delete this project?")) {
+      try {
+        const response = await fetch(`/api/delete-project`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id: projectId }),
+        });
+        if (response.ok) {
+          fetchProjects(); // Refresh the project list
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to delete project');
+        }
+      } catch (error) {
+        console.error('Error deleting project:', error);
+        alert('Failed to delete project. Please try again.');
+      }
+    }
+  }
+
   if (status === "loading" || isLoading) {
     return <div className="flex justify-center items-center min-h-screen">Loading...</div>; // Consider using a spinner here
   }
@@ -94,6 +117,9 @@ export default function Projects() {
                       <Link href={`/projects/${project.id}`} className="text-primary hover:underline">
                         <h4 className="font-semibold text-lg">{project.name}</h4>
                       </Link>
+                      <Button onClick={() => handleDeleteProject(project.id)} variant="destructive" className="mt-2">
+                        Delete Project
+                      </Button>
                     </CardContent>
                   </Card>
                 ))}
