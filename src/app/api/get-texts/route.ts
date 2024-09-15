@@ -16,6 +16,7 @@ export async function GET(request: Request) {
   }
 
   try {
+    // Ensure it only fetches from texts
     const { rows } = await sql`
       SELECT t.id, t.content, t.created_at
       FROM texts t

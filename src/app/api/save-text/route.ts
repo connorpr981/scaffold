@@ -25,7 +25,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Project not found or unauthorized' }, { status: 404 })
     }
 
-    // Insert the text
+    // Ensure it only saves to texts
     await sql`
       INSERT INTO texts (project_id, content)
       VALUES (${projectId}, ${text})

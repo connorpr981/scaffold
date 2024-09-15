@@ -27,20 +27,19 @@ export async function GET() {
       )
     `
 
-    // Migrate existing data
-    await sql`
-      INSERT INTO projects (user_email, name)
-      SELECT DISTINCT user_email, project
-      FROM user_texts
-      WHERE project IS NOT NULL
-    `
-
-    await sql`
-      INSERT INTO texts (project_id, content, created_at)
-      SELECT p.id, ut.content, ut.created_at
-      FROM user_texts ut
-      JOIN projects p ON ut.user_email = p.user_email AND ut.project = p.name
-    `
+    // Remove migration of user_texts
+    // await sql`
+    //   INSERT INTO projects (user_email, name)
+    //   SELECT DISTINCT user_email, project
+    //   FROM user_texts
+    //   WHERE project IS NOT NULL
+    // `
+    // await sql`
+    //   INSERT INTO texts (project_id, content, created_at)
+    //   SELECT p.id, ut.content, ut.created_at
+    //   FROM user_texts ut
+    //   JOIN projects p ON ut.user_email = p.user_email AND ut.project = p.name
+    // `
 
     // Drop the old table
     await sql`DROP TABLE IF EXISTS user_texts`
