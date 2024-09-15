@@ -8,7 +8,7 @@ import Header from '../components/Header'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Scaffold', // Updated project name
+  title: 'Scaffold',
   description: 'A template app with NextAuth and Vercel Postgres',
 }
 
