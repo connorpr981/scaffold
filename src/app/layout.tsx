@@ -19,13 +19,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} antialiased`}>
+    <html lang="en" className="h-full">
+      <body className={`${inter.className} antialiased h-full`}>
         <Providers>
-          <Header />
-          <DynamicErrorBoundary>
-            <main>{children}</main>
-          </DynamicErrorBoundary>
+          <div className="flex flex-col min-h-full">
+            <Header />
+            <main className="flex-grow">{children}</main>
+          </div>
         </Providers>
       </body>
     </html>

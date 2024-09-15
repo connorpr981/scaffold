@@ -89,7 +89,7 @@ export default function Projects() {
   }
 
   if (status === "loading" || isLoading) {
-    return <div className="flex justify-center items-center min-h-screen">Loading...</div>; // Consider using a spinner here
+    return <div className="flex justify-center items-center h-full">Loading...</div>;
   }
 
   if (!userData) {
@@ -97,54 +97,54 @@ export default function Projects() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
-      <Card className="w-full max-w-3xl">
-        <CardHeader>
-          <CardTitle className="text-3xl font-bold text-center mb-4">
-            Your Projects
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {projects.length > 0 ? (
-            <>
-              <h2 className="text-xl font-semibold mb-2">
-                Existing Projects
-              </h2> {/* Added section heading */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
-                {projects.map((project) => (
-                  <Card key={project.id} className="w-full shadow-md hover:shadow-lg transition-shadow duration-200">
-                    <CardContent className="p-4">
+    <div className="container mx-auto px-4 py-8 h-full">
+      <h1 className="text-3xl font-bold mb-8 text-center">Your Projects</h1>
+      <div className="space-y-8">
+        {projects.length > 0 ? (
+          <section>
+            <h2 className="text-2xl font-semibold mb-4">Existing Projects</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {projects.map((project) => (
+                <Card key={project.id} className="flex flex-col justify-between">
+                  <CardHeader>
+                    <CardTitle>
                       <Link href={`/projects/${project.id}`} className="text-primary hover:underline">
-                        <h4 className="font-semibold text-lg">{project.name}</h4>
+                        {project.name}
                       </Link>
-                      <Button onClick={() => handleDeleteProject(project.id)} variant="destructive" className="mt-2">
-                        Delete Project
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <Button onClick={() => handleDeleteProject(project.id)} variant="destructive" className="w-full">
+                      Delete Project
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+        ) : (
+          <p className="text-center text-muted-foreground">
+            You don&apos;t have any projects yet. Create one below!
+          </p>
+        )}
+        <section>
+          <h2 className="text-2xl font-semibold mb-4">Create a New Project</h2>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex space-x-2">
+                <Input
+                  type="text"
+                  value={newProject}
+                  onChange={(e) => setNewProject(e.target.value)}
+                  placeholder="New project name"
+                  className="flex-grow"
+                />
+                <Button onClick={handleCreateProject}>Create Project</Button>
               </div>
-            </>
-          ) : (
-            <p className="mb-4 text-muted-foreground">
-              You don&apos;t have any projects yet. Create one below! {/* Escaped apostrophe */}
-            </p>
-          )}
-          <h2 className="text-xl font-semibold mt-6 mb-2">
-            Create a New Project
-          </h2> {/* Added section heading */}
-          <div className="flex space-x-2 mt-4">
-            <Input
-              type="text"
-              value={newProject}
-              onChange={(e) => setNewProject(e.target.value)}
-              placeholder="New project name"
-              className="flex-grow"
-            />
-            <Button onClick={handleCreateProject}>Create Project</Button>
-          </div>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
+        </section>
+      </div>
     </div>
   )
 }
