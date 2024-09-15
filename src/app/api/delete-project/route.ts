@@ -14,7 +14,6 @@ export async function DELETE(request: Request) {
     }
 
     try {
-        // Ensure it only deletes from projects
         await sql`
             DELETE FROM projects
             WHERE id = ${id} AND user_email = ${session.user.email}

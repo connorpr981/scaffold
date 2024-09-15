@@ -16,7 +16,6 @@ export async function GET(request: Request) {
   }
 
   try {
-    // Ensure it only fetches from projects
     const { rows: projectRows } = await sql`
       SELECT id, name
       FROM projects

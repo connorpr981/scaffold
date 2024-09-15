@@ -15,7 +15,6 @@ export async function POST(request: Request) {
   }
 
   try {
-    // Check if the project exists and belongs to the user
     const { rows: projectRows } = await sql`
       SELECT id FROM projects
       WHERE id = ${projectId} AND user_email = ${session.user.email}
@@ -25,7 +24,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Project not found or unauthorized' }, { status: 404 })
     }
 
-    // Ensure it only saves to texts
     await sql`
       INSERT INTO texts (project_id, content)
       VALUES (${projectId}, ${text})
