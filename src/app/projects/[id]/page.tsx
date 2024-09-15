@@ -12,9 +12,9 @@ import { handleError } from '../../../utils/errorHandler'; // Import the error h
 
 export default function ProjectPage({ params }: { params: { id: string } }) {
   const { userData, status } = useUser()
-  const [input, setInput] = useState('') // New state for input
-  const [output, setOutput] = useState('') // New state for output
-  const [savedPairs, setSavedPairs] = useState([]) // Updated state for input-output pairs
+  const [input, setInput] = useState('')
+  const [output, setOutput] = useState('')
+  const [savedPairs, setSavedPairs] = useState([])
   const [isSaving, setIsSaving] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [projectName, setProjectName] = useState('')

@@ -22,7 +22,7 @@ export default function Home() {
         </CardHeader>
         <CardContent className="text-center">
           <p className="mb-6 text-muted-foreground">
-            Create and manage your examples with ease.
+            Create and manage examples with ease.
           </p>
           {status === "authenticated" ? (
             <Button asChild>
@@ -30,7 +30,7 @@ export default function Home() {
             </Button>
           ) : (
             <Button asChild>
-              <Link href="/auth/signin">Sign In to Get Started</Link>
+              <Link href="/auth/signin">Sign In</Link>
             </Button>
           )}
         </CardContent>

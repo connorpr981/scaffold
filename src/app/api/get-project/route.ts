@@ -22,10 +22,6 @@ export async function GET(request: Request) {
       WHERE id = ${projectId} AND user_email = ${session.user.email}
     `
 
-    if (projectRows.length === 0) {
-      return NextResponse.json({ error: 'Project not found or unauthorized' }, { status: 404 })
-    }
-
     const { rows: textRows } = await sql`
       SELECT id, input, output, created_at, updated_at
       FROM texts
