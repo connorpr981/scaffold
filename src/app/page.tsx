@@ -20,7 +20,7 @@ export default function Home() {
         </CardHeader>
         <CardContent className="text-center">
           <p className="mb-6 text-muted-foreground">
-            Create and manage your projects with ease.
+            Create and manage your examples with ease.
           </p>
           {status === "authenticated" ? (
             <Button asChild>
