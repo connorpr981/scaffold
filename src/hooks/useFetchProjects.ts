@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import { NextRouter } from 'next/router'; // Import NextRouter
 
-export const useFetchProjects = (status: string, router: any) => { 
+export const useFetchProjects = (status: string, router: NextRouter) => { // Specify NextRouter type
     const [projects, setProjects] = useState<Array<{ id: number; name: string }>>([]); 
     const [isLoading, setIsLoading] = useState(true);
 
