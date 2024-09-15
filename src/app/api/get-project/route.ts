@@ -2,22 +2,23 @@ import { NextResponse } from 'next/server'
 import { sql } from '@vercel/postgres'
 import { getServerSession } from "next-auth/next"
 
-export async function POST(request: Request) {
+export async function GET(request: Request) {
   const session = await getServerSession()
   if (!session || !session.user?.email) {
     return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
   }
 
-  const { text, projectId } = await request.json()
+  const { searchParams } = new URL(request.url)
+  const projectId = searchParams.get('id')
 
   if (!projectId) {
     return NextResponse.json({ error: 'Project ID is required' }, { status: 400 })
   }
 
   try {
-    // Check if the project exists and belongs to the user
     const { rows: projectRows } = await sql`
-      SELECT id FROM projects
+      SELECT id, name
+      FROM projects
       WHERE id = ${projectId} AND user_email = ${session.user.email}
     `
 
@@ -25,15 +26,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Project not found or unauthorized' }, { status: 404 })
     }
 
-    // Insert the text
-    await sql`
-      INSERT INTO texts (project_id, content)
-      VALUES (${projectId}, ${text})
+    const { rows: textRows } = await sql`
+      SELECT id, content, created_at
+      FROM texts
+      WHERE project_id = ${projectId}
+      ORDER BY created_at DESC
     `
 
-    return NextResponse.json({ message: 'Text saved successfully' }, { status: 200 })
+    return NextResponse.json({ 
+      project: projectRows[0],
+      texts: textRows
+    }, { status: 200 })
   } catch (error) {
-    console.error('Failed to save text:', error)
-    return NextResponse.json({ error: 'Failed to save text' }, { status: 500 })
+    console.error('Failed to fetch project details:', error)
+    return NextResponse.json({ error: 'Failed to fetch project details' }, { status: 500 })
   }
 }

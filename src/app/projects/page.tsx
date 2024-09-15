@@ -16,7 +16,7 @@ export default function Projects() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
+    if (status === 'unauthenticated') { 
       router.push('/auth/signin')
     } else if (status === 'authenticated') {
       fetchProjects()
@@ -44,12 +44,12 @@ export default function Projects() {
   const handleCreateProject = async () => {
     if (!newProject.trim()) return
     try {
-      const response = await fetch('/api/save-text', {
+      const response = await fetch('/api/create-project', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text: '', project: newProject }),
+        body: JSON.stringify({ name: newProject }),
       })
       if (response.ok) {
         setNewProject('')

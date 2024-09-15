@@ -15,22 +15,23 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   const [savedTexts, setSavedTexts] = useState([])
   const [isSaving, setIsSaving] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [projectName, setProjectName] = useState('')
   const router = useRouter()
-  const project = decodeURIComponent(params.id)
 
-  const fetchSavedTexts = useCallback(async () => {
+  const fetchProjectDetails = useCallback(async () => {
     setIsLoading(true)
     try {
-      const response = await fetch(`/api/get-texts?projectId=${params.id}`)
+      const response = await fetch(`/api/get-project?id=${params.id}`)
       if (response.ok) {
         const data = await response.json()
+        setProjectName(data.project.name)
         setSavedTexts(data.texts)
       } else {
-        throw new Error('Failed to fetch texts')
+        throw new Error('Failed to fetch project details')
       }
-    } catch (error) {
-      console.error('Error fetching saved texts:', error)
-      alert('Failed to load saved texts. Please try again.')
+    } catch (error) { 
+      console.error('Error fetching project details:', error)
+      alert('Failed to load project details. Please try again.')
     } finally {
       setIsLoading(false)
     }
@@ -40,9 +41,9 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
     if (status === 'unauthenticated') {
       router.push('/auth/signin')
     } else if (status === 'authenticated') {
-      fetchSavedTexts()
+      fetchProjectDetails()
     }
-  }, [status, router, fetchSavedTexts])
+  }, [status, router, fetchProjectDetails])
 
   const handleSaveText = async () => {
     if (isSaving || !text.trim()) return
@@ -53,11 +54,11 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text, project: params.id }),
+        body: JSON.stringify({ text, projectId: params.id }),
       })
       if (response.ok) {
         setText('')
-        fetchSavedTexts()
+        fetchProjectDetails()
       } else {
         const errorData = await response.json()
         throw new Error(errorData.error || 'Failed to save text')
@@ -82,7 +83,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
       <Card className="w-full max-w-2xl">
         <CardHeader>
-          <CardTitle>Project: {project}</CardTitle>
+          <CardTitle>Project: {projectName}</CardTitle>
         </CardHeader>
         <CardContent>
           <Button asChild variant="link" className="mb-4">
