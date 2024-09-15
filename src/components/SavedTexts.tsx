@@ -5,16 +5,17 @@ import { handleError } from '@/utils/errorHandler'; // Import the error handler
 
 interface SavedText {
   id: number
-  content: string
+  input: string // Update to include input
+  output: string // Update to include output
   created_at: string
 }
 
 interface SavedTextsProps {
-  texts: SavedText[]
-  fetchProjectDetails: () => void; // Add this line
+  pairs: SavedText[] // Update to handle pairs
+  fetchProjectDetails: () => void;
 }
 
-const SavedTexts: React.FC<SavedTextsProps> = ({ texts, fetchProjectDetails }) => {
+const SavedTexts: React.FC<SavedTextsProps> = ({ pairs, fetchProjectDetails }) => {
   const handleEditText = async (textId: number, newContent: string) => {
     try {
       const response = await fetch(`/api/edit-text`, {
@@ -38,22 +39,23 @@ const SavedTexts: React.FC<SavedTextsProps> = ({ texts, fetchProjectDetails }) =
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Your Saved Texts</CardTitle>
+        <CardTitle>Your Saved Pairs</CardTitle>
       </CardHeader>
       <CardContent>
-        {texts.length === 0 ? (
-          <p className="text-muted-foreground">No saved texts yet.</p>
+        {pairs.length === 0 ? (
+          <p className="text-muted-foreground">No saved pairs yet.</p>
         ) : (
           <ul className="space-y-2">
-            {texts.map((text) => (
-              <li key={text.id}>
+            {pairs.map((pair) => (
+              <li key={pair.id}>
                 <Card>
                   <CardContent className="pt-4">
                     <p className="text-sm text-muted-foreground mb-1">
-                      {new Date(text.created_at).toLocaleString()}
+                      {new Date(pair.created_at).toLocaleString()}
                     </p>
-                    <p>{text.content}</p>
-                    <Button onClick={() => handleEditText(text.id, prompt("Edit text:", text.content) || text.content)} className="mt-2">
+                    <p>Input: {pair.input}</p>
+                    <p>Output: {pair.output}</p>
+                    <Button onClick={() => handleEditText(pair.id, prompt("Edit input:", pair.input) || pair.input)} className="mt-2">
                       Edit
                     </Button>
                   </CardContent>

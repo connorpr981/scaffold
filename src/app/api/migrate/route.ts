@@ -15,20 +15,18 @@ export async function GET() {
       )
     `
 
-    // Create texts table
+    // Create texts table with input and output columns
     await sql`
       CREATE TABLE IF NOT EXISTS texts (
         id SERIAL PRIMARY KEY,
         project_id INTEGER NOT NULL,
-        content TEXT,
+        input TEXT, // New column for input
+        output TEXT, // New column for output
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
       )
     `
-
-    // Drop the old table
-    await sql`DROP TABLE IF EXISTS user_texts`
 
     return NextResponse.json({ message: 'Migration successful' }, { status: 200 })
   } catch (error) {

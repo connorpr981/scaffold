@@ -12,8 +12,9 @@ import { handleError } from '../../../utils/errorHandler'; // Import the error h
 
 export default function ProjectPage({ params }: { params: { id: string } }) {
   const { userData, status } = useUser()
-  const [text, setText] = useState('')
-  const [savedTexts, setSavedTexts] = useState([])
+  const [input, setInput] = useState('') // New state for input
+  const [output, setOutput] = useState('') // New state for output
+  const [savedPairs, setSavedPairs] = useState([]) // Updated state for input-output pairs
   const [isSaving, setIsSaving] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [projectName, setProjectName] = useState('')
@@ -26,7 +27,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
       if (response.ok) {
         const data = await response.json()
         setProjectName(data.project.name)
-        setSavedTexts(data.texts)
+        setSavedPairs(data.pairs) // Update to handle pairs
       } else {
         throw new Error('Failed to fetch project details')
       }
@@ -47,22 +48,23 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   }, [status, router, fetchProjectDetails])
 
   const handleSaveText = async () => {
-    if (isSaving || !text.trim()) return
+    if (isSaving || !input.trim() || !output.trim()) return // Check both input and output
     setIsSaving(true)
     try {
-      const response = await fetch('/api/save-text', {
+      const response = await fetch('/api/save-pair', { // Updated endpoint for pairs
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text, projectId: params.id }),
+        body: JSON.stringify({ input, output, projectId: params.id }), // Save both input and output
       })
       if (response.ok) {
-        setText('')
+        setInput('') // Clear input
+        setOutput('') // Clear output
         fetchProjectDetails()
       } else {
         const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to save text')
+        throw new Error(errorData.error || 'Failed to save pair')
       }
     } catch (error) {
       handleError(error as Error); // Use the centralized error handler
@@ -90,20 +92,27 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
             <Link href="/projects">Back to Projects</Link>
           </Button>
           <Textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
             className="mb-4"
-            placeholder="Enter your text here"
-            rows={4}
+            placeholder="Enter your input here"
+            rows={2}
+          />
+          <Textarea
+            value={output}
+            onChange={(e) => setOutput(e.target.value)}
+            className="mb-4"
+            placeholder="Enter your output here"
+            rows={2}
           />
           <Button
             onClick={handleSaveText}
-            disabled={isSaving || !text.trim()}
+            disabled={isSaving || !input.trim() || !output.trim()}
             className="mb-4"
           >
-            {isSaving ? 'Saving...' : 'Save Text'}
+            {isSaving ? 'Saving...' : 'Save Pair'}
           </Button>
-          <SavedTexts texts={savedTexts} fetchProjectDetails={fetchProjectDetails} />
+          <SavedTexts pairs={savedPairs} fetchProjectDetails={fetchProjectDetails} /> {/* Update to handle pairs */}
         </CardContent>
       </Card>
     </div>
