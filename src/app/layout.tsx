@@ -1,15 +1,18 @@
+'use client'
+
+import type { Metadata } from 'next'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { Providers } from './providers'
 import Header from '../components/Header'
-// Removed unused DynamicErrorBoundary import
-// const DynamicErrorBoundary = dynamic(() => import('../components/ErrorBoundary'), { ssr: false })
+import MobileWarning from '../components/MobileWarning'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Scaffold',
-  description: 'A template app with NextAuth and Vercel Postgres',
+  description: 'Scaffold is a tool for creating and managing examples for your LLM.',
 }
 
 export default function RootLayout({
@@ -17,6 +20,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return <MobileWarning />;
+  }
+
   return (
     <html lang="en" className="h-full">
       <body className={`${inter.className} antialiased flex flex-col min-h-screen`}>
@@ -28,5 +37,5 @@ export default function RootLayout({
         </Providers>
       </body>
     </html>
-  )
+  );
 }
