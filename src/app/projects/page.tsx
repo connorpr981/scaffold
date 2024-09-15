@@ -101,7 +101,7 @@ export default function Projects() {
             </>
           ) : (
             <p className="mb-4 text-muted-foreground">
-              You don't have any projects yet. Create one below!
+              You don&apos;t have any projects yet. Create one below! {/* Escaped apostrophe */}
             </p>
           )}
           <h2 className="text-xl font-semibold mt-6 mb-2">
