@@ -52,7 +52,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         tabIndex={isLoading ? -1 : 0} // Prevent keyboard navigation when loading
         {...props}
       >
-        {isLoading ? 'Loading...' : props.children} // Show loading text
+        {isLoading ? 'Loading...' : props.children} {/* Show loading text */}
       </Comp>
     );
   }

@@ -65,7 +65,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
         throw new Error(errorData.error || 'Failed to save text')
       }
     } catch (error) {
-      handleError(error); // Use the centralized error handler
+      handleError(error as Error); // Use the centralized error handler
     } finally {
       setIsSaving(false)
     }

@@ -2,9 +2,8 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import { Providers } from './providers'
 import Header from '../components/Header'
-import dynamic from 'next/dynamic'
-
-const DynamicErrorBoundary = dynamic(() => import('../components/ErrorBoundary'), { ssr: false })
+// Removed unused DynamicErrorBoundary import
+// const DynamicErrorBoundary = dynamic(() => import('../components/ErrorBoundary'), { ssr: false })
 
 const inter = Inter({ subsets: ['latin'] })
 

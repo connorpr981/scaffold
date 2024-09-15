@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
-export const useFetchProjects = (status: string, router: any) => {
-    const [projects, setProjects] = useState([]);
+export const useFetchProjects = (status: string, router: any) => { 
+    const [projects, setProjects] = useState<Array<{ id: number; name: string }>>([]); 
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {

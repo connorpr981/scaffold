@@ -31,7 +31,7 @@ const SavedTexts: React.FC<SavedTextsProps> = ({ texts, fetchProjectDetails }) =
         throw new Error(errorData.error || 'Failed to edit text');
       }
     } catch (error) {
-      handleError(error); // Use the centralized error handler
+      handleError(error as Error); // Use type assertion to treat error as Error
     }
   }
 
