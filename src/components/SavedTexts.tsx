@@ -8,6 +8,7 @@ interface SavedText {
   input: string // Update to include input
   output: string // Update to include output
   created_at: string
+  updated_at: string
 }
 
 interface SavedTextsProps {
@@ -16,14 +17,14 @@ interface SavedTextsProps {
 }
 
 const SavedTexts: React.FC<SavedTextsProps> = ({ pairs, fetchProjectDetails }) => {
-  const handleEditText = async (textId: number, newContent: string) => {
+  const handleEditText = async (textId: number, newInput: string, newOutput: string) => {
     try {
       const response = await fetch(`/api/edit-text`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: textId, content: newContent }),
+        body: JSON.stringify({ id: textId, input: newInput, output: newOutput }),
       });
       if (response.ok) {
         fetchProjectDetails(); // Refresh the saved texts
@@ -51,11 +52,18 @@ const SavedTexts: React.FC<SavedTextsProps> = ({ pairs, fetchProjectDetails }) =
                 <Card>
                   <CardContent className="pt-4">
                     <p className="text-sm text-muted-foreground mb-1">
-                      {new Date(pair.created_at).toLocaleString()}
+                      Created: {new Date(pair.created_at).toLocaleString()}
+                    </p>
+                    <p className="text-sm text-muted-foreground mb-1">
+                      Updated: {new Date(pair.updated_at).toLocaleString()}
                     </p>
                     <p>Input: {pair.input}</p>
                     <p>Output: {pair.output}</p>
-                    <Button onClick={() => handleEditText(pair.id, prompt("Edit input:", pair.input) || pair.input)} className="mt-2">
+                    <Button onClick={() => {
+                      const newInput = prompt("Edit input:", pair.input) || pair.input;
+                      const newOutput = prompt("Edit output:", pair.output) || pair.output;
+                      handleEditText(pair.id, newInput, newOutput);
+                    }} className="mt-2">
                       Edit
                     </Button>
                   </CardContent>

@@ -21,7 +21,7 @@ export async function GET() {
         id SERIAL PRIMARY KEY,
         project_id INTEGER NOT NULL,
         input TEXT, 
-        output TEXT, 
+        output TEXT, // New column for output
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE

@@ -17,7 +17,7 @@ export async function GET(request: Request) {
 
   try {
     const { rows: projectRows } = await sql`
-      SELECT id, name
+      SELECT id, name, created_at, updated_at
       FROM projects
       WHERE id = ${projectId} AND user_email = ${session.user.email}
     `
@@ -27,7 +27,7 @@ export async function GET(request: Request) {
     }
 
     const { rows: textRows } = await sql`
-      SELECT id, input, output, created_at
+      SELECT id, input, output, created_at, updated_at
       FROM texts
       WHERE project_id = ${projectId}
       ORDER BY created_at DESC
@@ -35,7 +35,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ 
       project: projectRows[0],
-      pairs: textRows // Update to return pairs
+      pairs: textRows
     }, { status: 200 })
   } catch (error) {
     console.error('Failed to fetch project details:', error)

@@ -16,16 +16,15 @@ export async function GET(request: Request) {
   }
 
   try {
-    // Ensure it only fetches from texts
     const { rows } = await sql`
-      SELECT t.id, t.content, t.created_at
+      SELECT t.id, t.input, t.output, t.created_at, t.updated_at
       FROM texts t
       JOIN projects p ON t.project_id = p.id
       WHERE p.user_email = ${session.user.email} AND p.id = ${projectId}
       ORDER BY t.created_at DESC
     `
 
-    return NextResponse.json({ texts: rows }, { status: 200 })
+    return NextResponse.json({ pairs: rows }, { status: 200 })
   } catch (error) {
     console.error('Failed to fetch texts:', error)
     return NextResponse.json({ error: 'Failed to fetch texts' }, { status: 500 })

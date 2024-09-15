@@ -8,7 +8,7 @@ export async function PUT(request: Request) {
         return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
     }
 
-    const { id, input, output } = await request.json() // Update to include input and output
+    const { id, input, output } = await request.json()
     if (!id || (input === undefined && output === undefined)) {
         return NextResponse.json({ error: 'Text ID and at least one of input or output are required' }, { status: 400 })
     }
@@ -16,8 +16,9 @@ export async function PUT(request: Request) {
     try {
         await sql`
             UPDATE texts
-            SET input = COALESCE(${input}, input), // Update input if provided
-                output = COALESCE(${output}, output) // Update output if provided
+            SET input = COALESCE(${input}, input),
+                output = COALESCE(${output}, output),
+                updated_at = CURRENT_TIMESTAMP
             WHERE id = ${id}
         `
         return NextResponse.json({ message: 'Text updated successfully' }, { status: 200 })

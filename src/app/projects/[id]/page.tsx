@@ -27,7 +27,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
       if (response.ok) {
         const data = await response.json()
         setProjectName(data.project.name)
-        setSavedPairs(data.pairs) // Update to handle pairs
+        setSavedPairs(data.pairs)
       } else {
         throw new Error('Failed to fetch project details')
       }
