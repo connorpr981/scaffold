@@ -9,8 +9,8 @@ export default function Header() {
   const { userData, status } = useUser();
 
   return (
-    <header className="bg-primary text-primary-foreground p-4">
-      <div className="container mx-auto flex justify-between items-center">
+    <header className="bg-primary text-primary-foreground py-4">
+      <div className="container mx-auto px-4 flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold">
           Scaffold
         </Link>

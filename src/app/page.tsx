@@ -9,11 +9,11 @@ export default function Home() {
   const { status } = useUser()
 
   if (status === "loading") {
-    return <div className="flex justify-center items-center min-h-screen">Loading...</div>
+    return <div className="flex justify-center items-center min-h-[50vh]">Loading...</div>
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
+    <div className="flex flex-col items-center justify-center min-h-[50vh]">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-3xl text-center">

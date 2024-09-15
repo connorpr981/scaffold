@@ -19,12 +19,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full">
-      <body className={`${inter.className} antialiased h-full`}>
+      <body className={`${inter.className} antialiased flex flex-col min-h-screen`}>
         <Providers>
-          <div className="flex flex-col min-h-full">
-            <Header />
-            <main className="flex-grow">{children}</main>
-          </div>
+          <Header />
+          <main className="flex-grow container mx-auto px-4 py-8">
+            {children}
+          </main>
         </Providers>
       </body>
     </html>

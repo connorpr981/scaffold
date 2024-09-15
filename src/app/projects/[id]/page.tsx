@@ -82,8 +82,8 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
-      <Card className="w-full max-w-2xl">
+    <div className="space-y-6">
+      <Card>
         <CardHeader>
           <CardTitle>Project: {projectName}</CardTitle>
         </CardHeader>
@@ -91,30 +91,29 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
           <Button asChild variant="link" className="mb-4">
             <Link href="/projects">Back to Projects</Link>
           </Button>
-          <Textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            className="mb-4"
-            placeholder="Enter your input here"
-            rows={2}
-          />
-          <Textarea
-            value={output}
-            onChange={(e) => setOutput(e.target.value)}
-            className="mb-4"
-            placeholder="Enter your output here"
-            rows={2}
-          />
-          <Button
-            onClick={handleSaveText}
-            disabled={isSaving || !input.trim() || !output.trim()}
-            className="mb-4"
-          >
-            {isSaving ? 'Saving...' : 'Save Pair'}
-          </Button>
-          <SavedTexts pairs={savedPairs} fetchProjectDetails={fetchProjectDetails} /> {/* Update to handle pairs */}
+          <div className="space-y-4">
+            <Textarea
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Enter your input here"
+              rows={2}
+            />
+            <Textarea
+              value={output}
+              onChange={(e) => setOutput(e.target.value)}
+              placeholder="Enter your output here"
+              rows={2}
+            />
+            <Button
+              onClick={handleSaveText}
+              disabled={isSaving || !input.trim() || !output.trim()}
+            >
+              {isSaving ? 'Saving...' : 'Save Pair'}
+            </Button>
+          </div>
         </CardContent>
       </Card>
+      <SavedTexts pairs={savedPairs} fetchProjectDetails={fetchProjectDetails} />
     </div>
   )
 }

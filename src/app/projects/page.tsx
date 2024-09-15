@@ -97,54 +97,52 @@ export default function Projects() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 h-full">
+    <div className="space-y-8">
       <h1 className="text-3xl font-bold mb-8 text-center">Your Projects</h1>
-      <div className="space-y-8">
-        {projects.length > 0 ? (
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">Existing Projects</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {projects.map((project) => (
-                <Card key={project.id} className="flex flex-col justify-between">
-                  <CardHeader>
-                    <CardTitle>
-                      <Link href={`/projects/${project.id}`} className="text-primary hover:underline">
-                        {project.name}
-                      </Link>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Button onClick={() => handleDeleteProject(project.id)} variant="destructive" className="w-full">
-                      Delete Project
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
-        ) : (
-          <p className="text-center text-muted-foreground">
-            You don&apos;t have any projects yet. Create one below!
-          </p>
-        )}
+      {projects.length > 0 ? (
         <section>
-          <h2 className="text-2xl font-semibold mb-4">Create a New Project</h2>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex space-x-2">
-                <Input
-                  type="text"
-                  value={newProject}
-                  onChange={(e) => setNewProject(e.target.value)}
-                  placeholder="New project name"
-                  className="flex-grow"
-                />
-                <Button onClick={handleCreateProject}>Create Project</Button>
-              </div>
-            </CardContent>
-          </Card>
+          <h2 className="text-2xl font-semibold mb-4">Existing Projects</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {projects.map((project) => (
+              <Card key={project.id} className="flex flex-col justify-between">
+                <CardHeader>
+                  <CardTitle>
+                    <Link href={`/projects/${project.id}`} className="text-primary hover:underline">
+                      {project.name}
+                    </Link>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Button onClick={() => handleDeleteProject(project.id)} variant="destructive" className="w-full">
+                    Delete Project
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </section>
-      </div>
+      ) : (
+        <p className="text-center text-muted-foreground">
+          You don&apos;t have any projects yet. Create one below!
+        </p>
+      )}
+      <section>
+        <h2 className="text-2xl font-semibold mb-4">Create a New Project</h2>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex space-x-2">
+              <Input
+                type="text"
+                value={newProject}
+                onChange={(e) => setNewProject(e.target.value)}
+                placeholder="New project name"
+                className="flex-grow"
+              />
+              <Button onClick={handleCreateProject}>Create Project</Button>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
     </div>
   )
 }
