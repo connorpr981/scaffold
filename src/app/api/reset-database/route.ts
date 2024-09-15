@@ -41,6 +41,18 @@ export async function GET(request: Request) {
       )
     `
 
+    // Add this to the try block where tables are created
+    await sql`
+      CREATE TABLE feedback (
+        id SERIAL PRIMARY KEY,
+        user_email TEXT NOT NULL,
+        content TEXT NOT NULL,
+        user_agent TEXT,
+        url TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `
+
     return NextResponse.json({ message: 'Database reset successful' }, { status: 200 })
   } catch (error) {
     console.error('Database reset failed:', error)

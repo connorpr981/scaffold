@@ -4,9 +4,12 @@ import Link from 'next/link';
 import { useUser } from '../contexts/UserContext';
 import { signOut } from 'next-auth/react';
 import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import FeedbackModal from './FeedbackModal'; // We'll create this component next
 
 export default function Header() {
   const { userData, status } = useUser();
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
 
   return (
     <header className="bg-primary text-primary-foreground py-4">
@@ -14,14 +17,20 @@ export default function Header() {
         <Link href="/" className="text-2xl font-bold">
           Scaffold
         </Link>
-        <nav>
+        <nav className="flex items-center space-x-4">
           {status === 'loading' ? (
             <span>Loading...</span>
           ) : status === 'authenticated' ? (
-            <div className="flex items-center space-x-4">
+            <>
               <span>Welcome, {userData?.name || 'User'}</span>
               <Button asChild variant="ghost">
                 <Link href="/projects">Projects</Link>
+              </Button>
+              <Button
+                onClick={() => setIsFeedbackModalOpen(true)}
+                variant="outline"
+              >
+                Feedback
               </Button>
               <Button
                 onClick={() => signOut({ callbackUrl: '/' })}
@@ -29,7 +38,7 @@ export default function Header() {
               >
                 Sign Out
               </Button>
-            </div>
+            </>
           ) : (
             <Button asChild variant="ghost">
               <Link href="/auth/signin">Sign In</Link>
@@ -37,6 +46,9 @@ export default function Header() {
           )}
         </nav>
       </div>
+      {isFeedbackModalOpen && (
+        <FeedbackModal onClose={() => setIsFeedbackModalOpen(false)} />
+      )}
     </header>
   );
 }
