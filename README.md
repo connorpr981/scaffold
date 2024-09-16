@@ -1,51 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Scaffold
+
+Scaffold is a tool for creating and managing examples for your Large Language Model (LLM) pipelines.
+
+## Features
+
+- User authentication with GitHub
+- Project management (create, view, delete projects)
+- Input-output pair creation and management within projects
+- Feedback submission system
+- Responsive design (desktop-only)
+
+## Tech Stack
+
+- Next.js 14
+- React 18
+- TypeScript
+- Tailwind CSS
+- NextAuth.js for authentication
+- Vercel Postgres for database
+- Framer Motion for animations
 
 ## Getting Started
 
-First, run the development server:
+1. Set up your environment variables:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   ```
+   GITHUB_ID=your_github_oauth_app_client_id
+   GITHUB_SECRET=your_github_oauth_app_client_secret
+   NEXTAUTH_SECRET=random_string_for_token_hashing
+   NEXTAUTH_URL=http://localhost:3000 (for local development)
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Run the development server:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   # or
+   bun dev
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `src/app`: Main application pages and API routes
+- `src/components`: Reusable React components
+- `src/contexts`: React context providers
+- `src/hooks`: Custom React hooks
+- `src/lib`: Utility functions and shared logic
+- `src/utils`: Helper functions
 
 ## Deployment
 
-This project is designed to be deployed on Vercel. Follow these steps:
+Deploy on Vercel:
 
 1. Push your code to a GitHub repository.
 2. Create a new project on Vercel and link it to your GitHub repository.
-3. Set up the following environment variables in your Vercel project settings:
-   - `GITHUB_ID`: Your GitHub OAuth App Client ID
-   - `GITHUB_SECRET`: Your GitHub OAuth App Client Secret
-   - `NEXTAUTH_SECRET`: A random string used to hash tokens (you can generate one using `openssl rand -base64 32`)
-   - `NEXTAUTH_URL`: The URL of your deployed app (e.g., https://your-app.vercel.app)
+3. Set up environment variables in Vercel project settings.
 4. Deploy the project.
+5. Set up a Vercel Postgres database and connect it to your project.
 
-Make sure to set up a Vercel Postgres database and connect it to your project for data storage.
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
