@@ -1,15 +1,18 @@
 import NextAuth from "next-auth"
 import GithubProvider from "next-auth/providers/github"
 
-if (!process.env.GITHUB_ID || !process.env.GITHUB_SECRET) {
-  throw new Error('Missing GitHub OAuth credentials');
+const githubId = process.env.GITHUB_ID
+const githubSecret = process.env.GITHUB_SECRET
+
+if (!githubId || !githubSecret) {
+  console.warn('Missing GitHub OAuth credentials. Authentication will be disabled.');
 }
 
 const handler = NextAuth({
   providers: [
     GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
+      clientId: githubId ?? "",
+      clientSecret: githubSecret ?? "",
     }),
   ],
   pages: {
