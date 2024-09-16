@@ -1,27 +1,23 @@
-import NextAuth, { NextAuthOptions } from "next-auth"
+import NextAuth from "next-auth"
 import GithubProvider from "next-auth/providers/github"
 
-const authOptions: NextAuthOptions = {
+const githubId = process.env.GITHUB_ID
+const githubSecret = process.env.GITHUB_SECRET
+
+if (!githubId || !githubSecret) {
+  console.warn('Missing GitHub OAuth credentials. Authentication will be disabled.');
+}
+
+const handler = NextAuth({
   providers: [
     GithubProvider({
-      clientId: process.env.GITHUB_ID ?? "",
-      clientSecret: process.env.GITHUB_SECRET ?? "",
+      clientId: githubId ?? "",
+      clientSecret: githubSecret ?? "",
     }),
   ],
   pages: {
     signIn: '/auth/signin',
   },
-  callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      if (!process.env.GITHUB_ID || !process.env.GITHUB_SECRET) {
-        console.warn("GitHub OAuth credentials are missing. Authentication will not work.");
-        return false;
-      }
-      return true;
-    },
-  },
-}
-
-const handler = NextAuth(authOptions)
+})
 
 export { handler as GET, handler as POST }
