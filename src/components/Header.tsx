@@ -28,7 +28,7 @@ export default function Header() {
               </Button>
               <Button
                 onClick={() => setIsFeedbackModalOpen(true)}
-                variant="outline"
+                variant="secondary"
               >
                 Feedback
               </Button>
@@ -47,7 +47,9 @@ export default function Header() {
         </nav>
       </div>
       {isFeedbackModalOpen && (
-        <FeedbackModal onClose={() => setIsFeedbackModalOpen(false)} />
+        <FeedbackModal
+          onClose={() => setIsFeedbackModalOpen(false)}
+        />
       )}
     </header>
   );
