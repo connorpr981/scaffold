@@ -24,7 +24,7 @@ export default function Home() {
         </CardHeader>
         <CardContent className="text-center">
           <p className="mb-6 text-muted-foreground">
-          Let's get started.
+            Let&apos;s get started.
           </p>
           {status === "authenticated" ? (
             <Button asChild>
